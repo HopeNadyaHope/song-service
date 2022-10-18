@@ -19,7 +19,7 @@ public class SongController {
     @Autowired
     private SongService service;
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Map<String, Integer> create(@Valid @RequestBody SongModel songModel) {
         return Map.of(ID, service.create(songModel));
