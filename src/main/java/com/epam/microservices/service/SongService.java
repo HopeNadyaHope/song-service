@@ -3,6 +3,7 @@ package com.epam.microservices.service;
 import com.epam.microservices.model.SongEntity;
 import com.epam.microservices.model.SongModel;
 import com.epam.microservices.repository.SongRepository;
+import com.epam.microservices.service.exception.DuplicateResourceIdException;
 import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class SongService {
     private ModelMapper modelMapper;
 
     public Integer create(SongModel songModel) {
+        Integer resourceId = songModel.getResourceId();
+        if (repository.isSongWithResourceIdAlreadyPresent(resourceId)) {
+            throw new DuplicateResourceIdException(resourceId);
+        }
         SongEntity songEntity = modelMapper.map(songModel, SongEntity.class);
         repository.create(songEntity);
         return songEntity.getId();

@@ -1,5 +1,6 @@
 package com.epam.microservices.controller.exception;
 
+import com.epam.microservices.service.exception.DuplicateResourceIdException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -28,6 +29,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ApiError objectNotFoundException(ObjectNotFoundException e) {
         return new ApiError(HttpStatus.NOT_FOUND,
+                e.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateResourceIdException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ApiError duplicateResourceIdException(DuplicateResourceIdException e) {
+        return new ApiError(HttpStatus.CONFLICT,
                 e.getMessage());
     }
 

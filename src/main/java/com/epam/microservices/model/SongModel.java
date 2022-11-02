@@ -3,6 +3,7 @@ package com.epam.microservices.model;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class SongModel {
     @NotBlank(message = "Name can't be empty")
@@ -66,5 +67,18 @@ public class SongModel {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SongModel songModel = (SongModel) o;
+        return resourceId == songModel.resourceId && year == songModel.year && name.equals(songModel.name) && artist.equals(songModel.artist) && album.equals(songModel.album) && length.equals(songModel.length);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, artist, album, length, resourceId, year);
     }
 }

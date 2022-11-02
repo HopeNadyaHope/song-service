@@ -14,13 +14,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/songs")
 public class SongController {
-
     private static final String ID = "id";
     @Autowired
     private SongService service;
 
     @PostMapping(consumes = "application/json")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody Map<String, Integer> create(@Valid @RequestBody SongModel songModel) {
         return Map.of(ID, service.create(songModel));
     }
