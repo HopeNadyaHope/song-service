@@ -6,7 +6,7 @@ import com.epam.microservices.model.SongModel;
 import com.epam.microservices.repository.SongRepository;
 import com.epam.microservices.service.SongService;
 import com.epam.microservices.service.exception.DuplicateResourceIdException;
-import org.hibernate.ObjectNotFoundException;
+import com.epam.microservices.service.exception.SongNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -118,7 +118,7 @@ class IntegrationTest {
 
         when(repository.read(id)).thenReturn(Optional.empty());
 
-        assertThrows(ObjectNotFoundException.class, () -> controller.read(id));
+        assertThrows(SongNotFoundException.class, () -> controller.read(id));
         verify(service).read(id);
         verifyNoMoreInteractions(service);
         verify(repository).read(id);

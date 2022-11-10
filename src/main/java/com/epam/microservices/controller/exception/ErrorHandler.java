@@ -1,7 +1,7 @@
 package com.epam.microservices.controller.exception;
 
 import com.epam.microservices.service.exception.DuplicateResourceIdException;
-import org.hibernate.ObjectNotFoundException;
+import com.epam.microservices.service.exception.SongNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,9 +25,9 @@ public class ErrorHandler {
                 MessageFormat.format(FIELD_ERROR_MESSAGE_PATTERN, fieldError.getField(), fieldError.getDefaultMessage()));
     }
 
-    @ExceptionHandler(ObjectNotFoundException.class)
+    @ExceptionHandler(SongNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ApiError objectNotFoundException(ObjectNotFoundException e) {
+    public @ResponseBody ApiError songNotFoundException(SongNotFoundException e) {
         return new ApiError(HttpStatus.NOT_FOUND,
                 e.getMessage());
     }
