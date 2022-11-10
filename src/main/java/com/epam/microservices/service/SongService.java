@@ -3,7 +3,8 @@ package com.epam.microservices.service;
 import com.epam.microservices.model.SongEntity;
 import com.epam.microservices.model.SongModel;
 import com.epam.microservices.repository.SongRepository;
-import org.hibernate.ObjectNotFoundException;
+import com.epam.microservices.service.exception.DuplicateResourceIdException;
+import com.epam.microservices.service.exception.SongNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class SongService {
     private ModelMapper modelMapper;
 
     public Integer create(SongModel songModel) {
+        Integer resourceId = songModel.getResourceId();
+        if (repository.isSongWithResourceIdAlreadyPresent(resourceId)) {
+            throw new DuplicateResourceIdException(resourceId);
+        }
         SongEntity songEntity = modelMapper.map(songModel, SongEntity.class);
         repository.create(songEntity);
         return songEntity.getId();
@@ -30,7 +35,7 @@ public class SongService {
     public SongModel read(int id) {
         Optional<SongEntity> songEntity = repository.read(id);
         return songEntity.map(songEntity1 -> modelMapper.map(songEntity1, SongModel.class))
-                .orElseThrow(() -> new ObjectNotFoundException(id, SongEntity.class.getName()));
+                .orElseThrow(() -> new SongNotFoundException(id));
     }
 
     public List<Integer> delete(List<Integer> ids) {

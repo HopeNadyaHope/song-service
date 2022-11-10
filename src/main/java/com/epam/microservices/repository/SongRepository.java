@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public class SongRepository {
+
+    private static final String COUNT_SONGS_WITH_RESOURCE_ID_SQL_QUERY = "SELECT count(s) FROM SongEntity s " +
+            "WHERE s.resourceId = ?1";
     @PersistenceContext
     protected EntityManager entityManager;
 
@@ -24,6 +27,11 @@ public class SongRepository {
 
     @Transactional
     public void delete(SongEntity songEntity) {
-        entityManager.remove(songEntity);
+        entityManager.remove(entityManager.contains(songEntity) ? songEntity : entityManager.merge(songEntity));
+    }
+
+    public boolean isSongWithResourceIdAlreadyPresent(Integer resourceId) {
+        return entityManager.createQuery(COUNT_SONGS_WITH_RESOURCE_ID_SQL_QUERY, Long.class)
+                .setParameter(1, resourceId).getSingleResult() > 0;
     }
 }
