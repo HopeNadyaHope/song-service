@@ -25,6 +25,7 @@ dependencies {
     implementation "org.modelmapper:modelmapper:${model_mapper_version}"
     implementation "javax.validation:validation-api:${javax_validation_version}"
     implementation "net.logstash.logback:logstash-logback-encoder:${logstash_version}"
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth:${sleuth_version}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
