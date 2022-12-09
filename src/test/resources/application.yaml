@@ -13,3 +13,6 @@ spring:
 eureka:
   client:
     enabled: false
+
+logstash:
+  enabled: false
